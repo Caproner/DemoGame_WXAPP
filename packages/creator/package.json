@@ -1,0 +1,28 @@
+{
+  "name": "creator",
+  "version": "0.0.1",
+  "description": "The package template for getting started.",
+  "author": "Cocos Creator",
+  "main": "main.js",
+  "main-menu": {
+    "i18n:MAIN_MENU.package.title/creator/ViewCtrl": {
+      "message": "creator:ViewCtrl"
+    },
+    "i18n:MAIN_MENU.package.title/creator/LayerCtrl": {
+      "message": "creator:LayerCtrl"
+    },
+    "i18n:MAIN_MENU.package.title/creator/Model": {
+      "message": "creator:Model"
+    },
+    "i18n:MAIN_MENU.package.title/creator/Ctrl": {
+      "message": "creator:Ctrl"
+    }
+  },
+  "panel": {
+    "main": "panel/index.js",
+    "type": "dockable",
+    "title": "creator",
+    "width": 400,
+    "height": 300
+  }
+}

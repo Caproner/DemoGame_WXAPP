@@ -1,3 +1,0 @@
-Cocos Dashboard 1.0.14
-Cocos Creator 2.4.0
-微信开发者工具 Stable 1.05.2103200

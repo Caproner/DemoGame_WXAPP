@@ -66,10 +66,6 @@ export default class UINAMECtrl extends Ctrl {
         super('UINAMECtrl');
     }
 
-    protected getMessageListeners() {
-        return {};
-    };
-
 };`
 
 let model_template = `import DataModel from "../../../framework/data/DataModel";
@@ -79,14 +75,9 @@ export default class UINAMEModel extends DataModel {
     constructor() {
         super('UINAME');
     }
-
-    protected getMessageListeners() {
-        let map: object = {};
-        return map;
-    };
 };`
 
-function createPrefabScript(assetInfo, template, suffix) {
+function createPrefabScript (assetInfo, template, suffix) {
   let url = assetInfo.url;
   let base_name = path.basenameNoExt(url);
   let idx1 = url.indexOf('prefabs');
@@ -118,7 +109,7 @@ function createPrefabScript(assetInfo, template, suffix) {
   }
 }
 
-function createSceneScript(assetInfo) {
+function createSceneScript (assetInfo) {
   let url = assetInfo.url;
   let base_name = path.basenameNoExt(url);
   let module_folder = path.join(project_path, "assets/script/scene/");
@@ -138,7 +129,7 @@ function createSceneScript(assetInfo) {
   }
 }
 
-function createFolder(assetInfo, template, suffix) {
+function createFolder (assetInfo, template, suffix) {
   let url = assetInfo.url;
   //Editor.log(url);
   let base_name = path.basenameNoExt(url);
@@ -167,11 +158,11 @@ function createFolder(assetInfo, template, suffix) {
   });
 }
 
-function mvcFolder(assetInfo, dataTemplate, ctrlTemplate) {
+function mvcFolder (assetInfo, dataTemplate, ctrlTemplate) {
 
 }
 
-function createCtrl(assetInfo, ctrlTemplate) {
+function createCtrl (assetInfo, ctrlTemplate) {
   let url = assetInfo.url;
   let base_name = path.basenameNoExt(url);
   let script_base_name = base_name;
@@ -191,7 +182,7 @@ function createCtrl(assetInfo, ctrlTemplate) {
   }
 }
 
-function createModel(assetInfo, ctrlTemplate) {
+function createModel (assetInfo, ctrlTemplate) {
   let url = assetInfo.url;
   let base_name = path.basenameNoExt(url);
   let script_base_name = base_name;
@@ -219,17 +210,17 @@ function createModel(assetInfo, ctrlTemplate) {
 
 
 module.exports = {
-  load() {
+  load () {
     // execute when package loaded
   },
 
-  unload() {
+  unload () {
     // execute when package unloaded
   },
 
   // register your ipc messages here
   messages: {
-    'ViewCtrl'() {
+    'ViewCtrl' () {
       //Editor.log('Hello World!');
       let currentSelection = Editor.Selection.curSelection('asset');
       if (currentSelection.length < 1) {
@@ -254,7 +245,7 @@ module.exports = {
         Editor.log("please select prefab or scene");
       }
     },
-    'LayerCtrl'() {
+    'LayerCtrl' () {
       let currentSelection = Editor.Selection.curSelection('asset');
       if (currentSelection.length < 1) {
         Editor.log("null");
@@ -278,7 +269,7 @@ module.exports = {
         Editor.log("please select prefab or scene");
       }
     },
-    'Model'() {
+    'Model' () {
       let currentSelection = Editor.Selection.curSelection('asset');
       if (currentSelection.length < 1) {
         Editor.log("null");
@@ -293,7 +284,7 @@ module.exports = {
         Editor.log("please select prefab or scene");
       }
     },
-    'Ctrl'() {
+    'Ctrl' () {
       let currentSelection = Editor.Selection.curSelection('asset');
       if (currentSelection.length < 1) {
         Editor.log("null");

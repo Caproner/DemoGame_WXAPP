@@ -1986,7 +1986,7 @@ declare namespace wx {
    */
   function login(object: {
     timeout?: number;
-    success?: (res: { code: string }) => void;
+    success?: (res: { code: string, errMsg: string }) => void;
     fail?: (res?: any) => void;
     complete?: (res?: any) => void;
   }): void;

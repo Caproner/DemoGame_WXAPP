@@ -14,6 +14,10 @@ export class GameEvent {
   public static readonly Show_BuildBar = 'Show_BuildBar';//显示建筑栏
   /**显示底部工具栏 */
   public static readonly Show_TabBar = 'Show_TabBar';//显示底部工具栏
+  /**显示用户信息 */
+  public static readonly Show_UserInfoView = 'Show_UserInfoView';
+  /**关闭用户信息窗口 */
+  public static readonly Close_UserInfoView = 'Close_UserInfoView';
   /**初始化数据 */
   public static readonly Iint_Model = 'Init_Model';
   /**设置当前建造id*/

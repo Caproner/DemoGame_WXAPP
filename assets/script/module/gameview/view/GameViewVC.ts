@@ -10,6 +10,24 @@ import DataCenter from "../../main/DataCenter";
 
 const { ccclass } = cc._decorator;
 
+
+let tiledIdMap = {
+  11: 2,
+  12: 2,
+  13: 2,
+  14: 2,
+  30: 2,
+  43: 2,
+  45: 2,
+  19: 3,
+  20: 3,
+  35: 3,
+  36: 3
+};
+
+let girdWidth: number = 48;
+let halfGirdWidth: number = 24;
+
 @ccclass
 export default class GameViewVC extends ViewCtrl {
 
@@ -27,12 +45,14 @@ export default class GameViewVC extends ViewCtrl {
   onLoad() {
     this.name = 'GameViewVC';
     super.onLoad();
-    this.map = this.node.getChildByName('TiledMap');
+    this.map = this.node.getChildByName('TiledMap001');
     this.buildingLayer = this.node.getChildByName('BuildingLayer');
     this.loadUi();
     this.registerEvent();
+    //test
     let model: MapModel = DataCenter.inst.getModel('Map');
     this.mapFlag = model.map;
+    this.initMapModel();
   }
 
   private loadUi() {
@@ -45,7 +65,7 @@ export default class GameViewVC extends ViewCtrl {
       if (this.buildBar)
         this.buildBar.active = false;
     });
-    for (let i = 1; i < 3; ++i) {
+    for (let i = 1; i < 5; ++i) {
       cc.resources.load('prefabs/building/B' + i, cc.Prefab, (err: Error, prefab: cc.Prefab) => {
         if (err) {
           Log.log(`load prefab failed:prefabs/building/B${i}`);
@@ -118,7 +138,7 @@ export default class GameViewVC extends ViewCtrl {
     //Log.log(this.buildId);
   }
 
-
+  //test
   touchEnd(t: cc.Touch) {
     if (this.buildId < 1 || undefined == this.buildingPrefabs[this.buildId]) {
       return;
@@ -141,9 +161,9 @@ export default class GameViewVC extends ViewCtrl {
     }
     pos = this.buildingLayer.convertToNodeSpaceAR(t.getLocation());
     let item = cc.instantiate(this.buildingPrefabs[this.buildId]);
-    let girdPos: cc.Vec3 = Util.girdPos(pos, 50, 50);
-    let pos2: cc.Vec3 = cc.v3(girdPos.x * 50 + 25, girdPos.y * 50 + 25, 0);
-    if (this.mapFlag[girdPos.y + 1][girdPos.x + 1]['terrain'] == 1) {
+    let girdPos: cc.Vec3 = Util.girdPos(pos, girdWidth, girdWidth);
+    let pos2: cc.Vec3 = cc.v3(girdPos.x * girdWidth + halfGirdWidth, girdPos.y * girdWidth + halfGirdWidth, 0);
+    if (this.mapFlag[girdPos.y][girdPos.x]['terrain'] != 3) {
       return;
     }
     let pos2d = cc.v2(pos2.x, pos2.y);
@@ -158,7 +178,48 @@ export default class GameViewVC extends ViewCtrl {
     }
     item.setPosition(pos2);
     this.buildingLayer.addChild(item);
+    //Log.log(girdPos);
     EventManager.emit(GameEvent.Build, { 'id': this.buildId, 'pos': girdPos });
   }
 
+  initMapModel() {
+    if (!this.map) {
+      return;
+    }
+
+    let tiledMap: cc.TiledMap = this.map.getComponent(cc.TiledMap);
+    if (!tiledMap) {
+      return;
+    }
+    let layer: cc.TiledLayer = tiledMap.getLayer('terrain');
+    if (!layer) {
+      return;
+    }
+    let size: cc.Size = layer.getLayerSize();
+    let row: number = size.height;
+    let col: number = size.width;
+    this.mapFlag = new Array<Array<object>>();
+    let idarr = new Array<Array<number>>();
+    for (let i = row - 1; i > -1; --i) {
+      let arr: Array<object> = new Array<object>();
+      let arr2: Array<number> = new Array<number>();
+      for (let j = 0; j < col; ++j) {
+        let obj = {
+          'terrain': 1,//草地
+          'building': 0,
+        };
+        let tiled: cc.TiledTile = layer.getTiledTileAt(j, i, true);
+        let id: number = tiledIdMap[tiled.gid];
+        if (id) {
+          obj['terrain'] = id;
+        }
+        arr.push(obj);
+        arr2.push(obj['terrain']);
+      }//end for j
+      this.mapFlag.push(arr);
+      idarr.push(arr2);
+    }//end for i
+    //console.log(this.mapFlag);
+    //console.log(idarr);
+  }
 }

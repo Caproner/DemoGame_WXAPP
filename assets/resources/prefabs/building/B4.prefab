@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "B2",
+    "_name": "B4",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -89,7 +89,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "894461a7-0e6e-434b-aba0-4c26836dd6f4"
+      "__uuid__": "b564ad2a-caa9-4118-8b40-44f0468ac6fe"
     },
     "_type": 0,
     "_sizeMode": 0,

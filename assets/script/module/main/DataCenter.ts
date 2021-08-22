@@ -1,5 +1,6 @@
 import ExampleModel from "../example/model/ExampleModel";
 import MapModel from "../gameview/model/MapModel";
+import UserInfoModel from "../gameview/model/UserInfoModel";
 import WXUserModel from "../login/model/WXUserModel";
 const { ccclass } = cc._decorator;
 
@@ -26,6 +27,7 @@ export default class DataCenter {
     this.pushModel(new MapModel());
     this.pushModel(new ExampleModel());
     this.pushModel(new WXUserModel());
+    this.pushModel(new UserInfoModel());
   }
 
   private pushModel(model: any) {

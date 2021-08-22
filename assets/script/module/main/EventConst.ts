@@ -24,8 +24,18 @@ export class GameEvent {
   public static readonly Set_Build_Id = 'Set_Build_Id';
   /**建造-设置地图信息 */
   public static readonly Build = 'Build';
+  /**建造-建造建筑 */
+  public static readonly Build_UI = 'Build_UI';
   /**将获取到的微信用户信息保存到本地 */
   public static readonly Save_WXUser_Info = 'Save_WXUser_Info';
+  /*刷新金钱*/
+  public static readonly Refresh_Money = "Refresh_Money"
+  /*刷新砖石*/
+  public static readonly Refresh_Masonry = "Refresh_Masonry"
+  /*刷新荣誉*/
+  public static readonly Refresh_Honor = "Refresh_Honor"
+  /*请求刷新货币数据*/
+  public static readonly Request_Refresh_Currency = "";
 }
 
 

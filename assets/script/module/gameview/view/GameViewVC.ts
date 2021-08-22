@@ -42,6 +42,7 @@ export default class GameViewVC extends ViewCtrl {
   private npcLayer: cc.Node = undefined;
   private userInfoView: cc.Node = undefined;
   private mapFlag = undefined;//测试用,不要直接访问model
+  private currentBuildingItem: cc.Node;
   onLoad() {
     this.name = 'GameViewVC';
     super.onLoad();
@@ -81,6 +82,7 @@ export default class GameViewVC extends ViewCtrl {
     EventManager.on(GameEvent.Set_Build_Id, this.setBuildId, this);
     EventManager.on(GameEvent.Show_UserInfoView, this.showUserInfo, this);
     EventManager.on(GameEvent.Close_UserInfoView, this.closeUserInfoView, this);
+    EventManager.on(GameEvent.Build_UI, this.build, this);
     this.node.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this);
   }
 
@@ -177,9 +179,14 @@ export default class GameViewVC extends ViewCtrl {
       }
     }
     item.setPosition(pos2);
-    this.buildingLayer.addChild(item);
+    //this.buildingLayer.addChild(item);
+    this.currentBuildingItem = item;
     //Log.log(girdPos);
     EventManager.emit(GameEvent.Build, { 'id': this.buildId, 'pos': girdPos });
+  }
+
+  build() {
+    if (this.buildingLayer && this.currentBuildingItem) { this.buildingLayer.addChild(this.currentBuildingItem); }
   }
 
   initMapModel() {
@@ -219,6 +226,8 @@ export default class GameViewVC extends ViewCtrl {
       this.mapFlag.push(arr);
       idarr.push(arr2);
     }//end for i
+    let model: MapModel = DataCenter.inst.getModel('Map');
+    model.map = this.mapFlag;
     //console.log(this.mapFlag);
     //console.log(idarr);
   }

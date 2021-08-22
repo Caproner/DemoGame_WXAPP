@@ -17,11 +17,25 @@ class Employee {
 }
 
 class Building {
+  constructor(id: number = 0, price: number = 0) {
+    this.id = id;
+    this.price = price;
+    this.employee = new Array<Employee>();
+    this.products = new Array<Product>();
+  }
   public id: number;
+  public price: number;
   public employee: Array<Employee>;
   public products: Array<Product>;
 }
 
+let buildingMap =
+{
+  1: new Building(1, 100),
+  2: new Building(2, 200),
+  3: new Building(3, 300),
+  4: new Building(4, 400)
+};
 
 
 
@@ -114,5 +128,13 @@ export default class MapModel extends DataModel {
 
       }//end for c
     }//end for l
+  }
+
+  getBuilingCost(id: number) {
+    let building: Building = buildingMap[id];
+    if (!building) {
+      return 0;
+    }
+    return building.price;
   }
 };

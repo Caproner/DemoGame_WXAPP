@@ -17,6 +17,7 @@ export default class LoadingVC extends ViewCtrl {
     start() {
         this.scheduleOnce(() => {
             if (MainCtrl.isWx) {
+                kj.iuygiulyf
                 wx.login({
 
                 });

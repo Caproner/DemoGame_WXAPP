@@ -3,6 +3,8 @@ import ViewCtrl from "../../../framework/ui/ViewCtrl";
 import { GameEvent, ViewLoaderEvent } from "../../main/EventConst";
 import MainCtrl from "../../main/MainCtrl";
 import Log from "../../../framework/util/Log"
+import axios from "../../../framework/net/src/Axios"
+import DataCenter from "../../main/DataCenter";
 
 const { ccclass } = cc._decorator;
 
@@ -13,7 +15,7 @@ export default class LoginVC extends ViewCtrl {
   onLoad() {
     this.name = 'LoginVC';
     super.onLoad();
-    this.node.on(cc.Node.EventType.TOUCH_END, this.onClick, this);
+    this.userAuthorize()
   }
 
   start() {
@@ -30,7 +32,7 @@ export default class LoginVC extends ViewCtrl {
     EventManager.emit(ViewLoaderEvent.View_Login_to_GameView);
   }
 
-  onClick() {
+  login() {
     if (!MainCtrl.inst.isWx) {
       this.startGame(undefined);
       return;
@@ -46,10 +48,9 @@ export default class LoginVC extends ViewCtrl {
               code: res.code
             },
             success(res1) {
-              //self.requestTest(res1.data);
+              self.loadData(res1.data);
               let data: any = res1.data;
               self.openID = data.data.OpenID;
-              self.checkSetting();
             }
           });
         } else {
@@ -59,7 +60,28 @@ export default class LoginVC extends ViewCtrl {
     });
   }
 
+
+  loadData(info: any): void {
+
+    //get full data
+    axios({
+      url: 'http://1.15.40.65:17263/player/action',
+      data: {
+        Proto: '120011',
+        OpenID: info.data.OpenID
+      }
+    }).then(res => {
+      let mapData: Array<Array<object>> = res.data.data.Maps.map
+      console.log(mapData);
+      DataCenter.inst.getModel("Map").loadMapdata(mapData)
+    })
+      .catch(err => { console.log(err) })
+  }
+
+
+
   requestTest(info: any) {
+
     console.log("============");
     console.log(info);
     console.log(info.data);
@@ -67,17 +89,18 @@ export default class LoginVC extends ViewCtrl {
     wx.request({
       url: 'http://1.15.40.65:17263/player/action',
       data: {
-        openID: info.data.OpenID,
-        Proto: '110011'
+        Proto: '120011',
+        OpenID: info.data.OpenID
       },
       success(res1) {
         console.log("======action======");
         console.log(res1);
       }
     });
+
   }
 
-  checkSetting() {
+  userAuthorize() {
     let self = this;
     let sysInfo = wx.getSystemInfoSync();
     //获取微信界面大小
@@ -112,8 +135,10 @@ export default class LoginVC extends ViewCtrl {
           button.onTap((res) => {
             if (res.userInfo) {
               //console.log("用户授权:", res.userInfo);
-              self.startGame(res.userInfo);
               //此时可进行登录操作
+              self.login()
+              self.startGame(res.userInfo);
+
               button.destroy();
             } else {
               Log.log("用户拒绝授权:");

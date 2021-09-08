@@ -67,46 +67,50 @@ export default class MapModel extends DataModel {
    * @memberof MapModel
    */
   initMap() {
-    this.map = new Array<Array<object>>();
+    // this.map = new Array<Array<object>>();
 
-    for (let i: number = 0; i < 28; ++i) {
-      let arr: Array<object> = new Array<object>();
-      for (let j: number = 0; j < 28; ++j) {
-        let obj = {
-          'terrain': 2,
-          'building': 0,
-        };
-        arr.push(obj);
-      }
-      this.map.push(arr);
-    }
-    for (let col: number = 1; col < 7; ++col) {
-      for (let row: number = 6; row < 8; ++row) {
-        let obj = {
-          'terrain': 1,
-          'building': 0,
-        };
-        this.map[row][col] = obj;
-      }//end for row
-    }//end for col
-    for (let col: number = 5; col < 7; ++col) {
-      for (let row: number = 8; row < 20; ++row) {
-        let obj = {
-          'terrain': 1,
-          'building': 0,
-        };
-        this.map[row][col] = obj;
-      }//end for row
-    }//end for col
-    for (let col: number = 7; col < 27; ++col) {
-      for (let row: number = 18; row < 20; ++row) {
-        let obj = {
-          'terrain': 1,
-          'building': 0,
-        };
-        this.map[row][col] = obj;
-      }//end for row
-    }//end for col
+    // for (let i: number = 0; i < 28; ++i) {
+    //   let arr: Array<object> = new Array<object>();
+    //   for (let j: number = 0; j < 28; ++j) {
+    //     let obj = {
+    //       'terrain': 2,
+    //       'building': 0,
+    //     };
+    //     arr.push(obj);
+    //   }
+    //   this.map.push(arr);
+    // }
+    // for (let col: number = 1; col < 7; ++col) {
+    //   for (let row: number = 6; row < 8; ++row) {
+    //     let obj = {
+    //       'terrain': 1,
+    //       'building': 0,
+    //     };
+    //     this.map[row][col] = obj;
+    //   }//end for row
+    // }//end for col
+    // for (let col: number = 5; col < 7; ++col) {
+    //   for (let row: number = 8; row < 20; ++row) {
+    //     let obj = {
+    //       'terrain': 1,
+    //       'building': 0,
+    //     };
+    //     this.map[row][col] = obj;
+    //   }//end for row
+    // }//end for col
+    // for (let col: number = 7; col < 27; ++col) {
+    //   for (let row: number = 18; row < 20; ++row) {
+    //     let obj = {
+    //       'terrain': 1,
+    //       'building': 0,
+    //     };
+    //     this.map[row][col] = obj;
+    //   }//end for row
+    // }//end for col
+  }
+
+  loadMapdata(mapData: any) {
+    this.map = mapData;
   }
 
   initLayers() {

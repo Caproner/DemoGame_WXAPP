@@ -7,6 +7,8 @@
  * @export
  * @class Util
  */
+const toString = Object.prototype.toString
+
 export default class Util {
 
     /**
@@ -25,5 +27,31 @@ export default class Util {
         let row: number = Math.floor(pos.y / height);
         let col: number = Math.floor(pos.x / width);
         return cc.v3(col, row, 0);
+    }
+    // 判断普通对象
+    public static isPlainObject(val: any): val is Object {
+        return toString.call(val) === '[object Object]'
+    }
+
+    public static transRequest(data: any): any {
+        // 判断普通对象（不包含Blob，formData之类） 对普通对象进行转换
+        // if (this.isPlainObject(data)) {
+        //     return JSON.stringify(data)
+        // } else {
+        //     return data
+        // }
+        return data;
+    }
+
+    public static transData(data: any): any {
+        if (typeof data === 'string') {
+            try {
+                data = JSON.parse(data)
+            } catch (e) {
+                console.log('转换失败:', e)
+            }
+        }
+
+        return data
     }
 }

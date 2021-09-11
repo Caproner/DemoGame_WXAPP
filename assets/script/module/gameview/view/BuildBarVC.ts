@@ -41,7 +41,7 @@ export default class BuildBarVC extends ViewCtrl {
   closeBar() {
     this.mark.setPosition(cc.v3(0, -500, 0));
     EventManager.emit(GameEvent.Show_TabBar);
-    EventManager.emit(GameEvent.Set_Build_Id, 0);
+    EventManager.emit(GameEvent.Set_Build_Id, -1);
   }
 
 }

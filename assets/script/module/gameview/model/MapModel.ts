@@ -2,7 +2,13 @@ import DataModel from "../../../framework/data/DataModel";
 import DataCfg from "../../datacfg/DataCfg";
 
 class Terrain {
+  constructor(id: number = 1, name: string = "草地", buildable: false) {
+    this.id = id;
+    this.name = name;
+    this.buildable = buildable;
+  }
   public id: number;
+  public name: string;
   public buildable: boolean;
 }
 
@@ -17,39 +23,91 @@ class Employee {
 }
 
 class Building {
-  constructor(id: number = 0, price: number = 0) {
+  constructor(id: number = 0, price: number = 0, name: string = "") {
     this.id = id;
+    this.name = name;
     this.price = price;
     this.employee = new Array<Employee>();
     this.products = new Array<Product>();
   }
   public id: number;
+  public name: string;
   public price: number;
   public employee: Array<Employee>;
   public products: Array<Product>;
 }
 
-let buildingMap =
+
+let buildings = [
+  {
+    'id': 1,
+    'name': '药水店',
+    'price': 100
+  },
+  {
+    'id': 2,
+    'name': '刀剑店',
+    'price': 200
+  },
+  {
+    'id': 3,
+    'name': '铠甲店',
+    'price': 300
+  },
+  {
+    'id': 4,
+    'name': '饰品店',
+    'price': 400
+  }
+];
+
+let defaultTerrainIdTable: Array<Array<number>> =
+  [
+    [1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1],
+    [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+    [1, 2, 3, 3, 1, 3, 3, 1, 3, 3, 1, 3, 3, 2, 1],
+    [1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1],
+    [1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1],
+    [1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1],
+    [1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1],
+    [1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1],
+    [1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1],
+    [1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1],
+    [1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1],
+    [1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1],
+    [1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1],
+    [1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1],
+    [1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1],
+    [1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1],
+    [1, 2, 3, 3, 1, 3, 3, 1, 3, 3, 1, 3, 3, 2, 1],
+    [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  ];
+
+let terrainIdNameMap =
 {
-  1: new Building(1, 100),
-  2: new Building(2, 200),
-  3: new Building(3, 300),
-  4: new Building(4, 400)
-};
-
-
+  '1': '草地',
+  '2': '道路',
+  '3': '建筑用地'
+}
 
 
 export default class MapModel extends DataModel {
 
-  public map: Array<Array<object>> = undefined;
+  public map: any = undefined;
   //public terrainLayer: Array<Array<number>> = undefined;
   //public buildingLayer: Array<Array<number>> = undefined;
-
-
   constructor() {
     super('Map');
-    //this.initMap();
+    this.initDefaultMap();
   }
 
   protected getMessageListeners() {
@@ -59,86 +117,41 @@ export default class MapModel extends DataModel {
     return map;
   };
 
-  /**
-   *初始化地图,测试用,后面应该要从服务端下载数据
-   *
-   * @author guan
-   * @date 2021/07/17
-   * @memberof MapModel
-   */
-  initMap() {
-    // this.map = new Array<Array<object>>();
+  private initDefaultMap() {
 
-    // for (let i: number = 0; i < 28; ++i) {
-    //   let arr: Array<object> = new Array<object>();
-    //   for (let j: number = 0; j < 28; ++j) {
-    //     let obj = {
-    //       'terrain': 2,
-    //       'building': 0,
-    //     };
-    //     arr.push(obj);
-    //   }
-    //   this.map.push(arr);
-    // }
-    // for (let col: number = 1; col < 7; ++col) {
-    //   for (let row: number = 6; row < 8; ++row) {
-    //     let obj = {
-    //       'terrain': 1,
-    //       'building': 0,
-    //     };
-    //     this.map[row][col] = obj;
-    //   }//end for row
-    // }//end for col
-    // for (let col: number = 5; col < 7; ++col) {
-    //   for (let row: number = 8; row < 20; ++row) {
-    //     let obj = {
-    //       'terrain': 1,
-    //       'building': 0,
-    //     };
-    //     this.map[row][col] = obj;
-    //   }//end for row
-    // }//end for col
-    // for (let col: number = 7; col < 27; ++col) {
-    //   for (let row: number = 18; row < 20; ++row) {
-    //     let obj = {
-    //       'terrain': 1,
-    //       'building': 0,
-    //     };
-    //     this.map[row][col] = obj;
-    //   }//end for row
-    // }//end for col
+
+    //console.log(defaultTerrainIdTable);
+    this.map = {};
+    for (let r: number = 0; r < 27; ++r) {
+      let arr = new Array<any>();
+      for (let c: number = 0; c < 15; ++c) {
+        let obj =
+        {
+          'terrain':
+          {
+            'id': 1,
+            'name': "草地"
+          }//,
+          // 'building':
+          // {
+          //   'id': 0,
+          //   'name': "",
+          //   'price': 0
+          // }
+        };
+        obj.terrain.id = defaultTerrainIdTable[r][c];
+        obj.terrain.name = terrainIdNameMap[obj.terrain.id];
+        this.map[`${r},${c}`] = obj;
+      }
+    }
+    //console.log(this.map);
   }
 
-  loadMapdata(mapData: any) {
-    this.map = mapData;
-  }
-
-  initLayers() {
-    if (!this.map) {
-      return;
-    }
-    let row = this.map.length;
-    if (row < 1) {
-      return;
-    }
-    let col = this.map[0].length;
-    if (col < 1) {
-      return;
-    }
-
-    for (let r = 0; r < row; ++r) {
-      for (let c = 0; c < col; ++c) {
-        let obj = this.map[r][c];
-
-      }//end for c
-    }//end for l
-  }
-
-  getBuilingCost(id: number) {
-    let building: Building = buildingMap[id];
-    if (!building) {
+  public getBuilingCost(id: number) {
+    if (id < 1 || id > buildings.length) {
       return 0;
     }
-    return building.price;
+    return buildings[id - 1]['price'];
   }
+
 };

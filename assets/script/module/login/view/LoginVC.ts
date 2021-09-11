@@ -3,15 +3,12 @@ import ViewCtrl from "../../../framework/ui/ViewCtrl";
 import { GameEvent, ViewLoaderEvent } from "../../main/EventConst";
 import MainCtrl from "../../main/MainCtrl";
 import Log from "../../../framework/util/Log"
-import axios from "../../../framework/net/src/Axios"
-import DataCenter from "../../main/DataCenter";
 
 const { ccclass } = cc._decorator;
 
 @ccclass
 export default class LoginVC extends ViewCtrl {
 
-  private openID: string;
   onLoad() {
     this.name = 'LoginVC';
     super.onLoad();
@@ -24,17 +21,19 @@ export default class LoginVC extends ViewCtrl {
   update(dt: number) {
   }
 
-  startGame(info: any) {
+  private startGame(data: any, info: any) {
     if (undefined == info) {
       Log.log(ViewLoaderEvent.View_Login_to_GameView);
     }
-    EventManager.emit(GameEvent.Save_WXUser_Info, this.openID, info);
+    //EventManager.emit(GameEvent.Save_WXUser_Info, openID, info);
+    EventManager.emit(GameEvent.Login_Succeeded, data, info);
     EventManager.emit(ViewLoaderEvent.View_Login_to_GameView);
   }
 
-  login() {
+  login(info: any) {
+    //console.log(MainCtrl.inst.isWx);
     if (!MainCtrl.inst.isWx) {
-      this.startGame(undefined);
+      this.startGame(undefined, undefined);
       return;
     }
     let self = this;
@@ -48,9 +47,9 @@ export default class LoginVC extends ViewCtrl {
               code: res.code
             },
             success(res1) {
-              self.loadData(res1.data);
               let data: any = res1.data;
-              self.openID = data.data.OpenID;
+              //self.loadData(data);
+              self.startGame(data, info)
             }
           });
         } else {
@@ -59,26 +58,6 @@ export default class LoginVC extends ViewCtrl {
       }
     });
   }
-
-
-  loadData(info: any): void {
-
-    //get full data
-    axios({
-      url: 'http://1.15.40.65:17263/player/action',
-      data: {
-        Proto: '120011',
-        OpenID: info.data.OpenID
-      }
-    }).then(res => {
-      let mapData: Array<Array<object>> = res.data.data.Maps.map
-      console.log(mapData);
-      DataCenter.inst.getModel("Map").loadMapdata(mapData)
-    })
-      .catch(err => { console.log(err) })
-  }
-
-
 
   requestTest(info: any) {
 
@@ -101,6 +80,10 @@ export default class LoginVC extends ViewCtrl {
   }
 
   userAuthorize() {
+    if (!MainCtrl.inst.isWx) {
+      this.startGame(undefined, undefined);
+      return;
+    }
     let self = this;
     let sysInfo = wx.getSystemInfoSync();
     //获取微信界面大小
@@ -112,7 +95,8 @@ export default class LoginVC extends ViewCtrl {
           Log.log("用户已授权");
           wx.getUserInfo({
             success(res) {
-              self.startGame(res.userInfo);
+              self.login(res.userInfo);
+              //self.startGame(res.userInfo);
             }
           });
         } else {
@@ -136,8 +120,8 @@ export default class LoginVC extends ViewCtrl {
             if (res.userInfo) {
               //console.log("用户授权:", res.userInfo);
               //此时可进行登录操作
-              self.login()
-              self.startGame(res.userInfo);
+              self.login(res.userInfo)
+              //self.startGame(res.userInfo);
 
               button.destroy();
             } else {

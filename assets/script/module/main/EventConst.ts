@@ -1,13 +1,17 @@
 
 /**
  *游戏事件常量
- *
+ * 
  * @author guan
  * @date 2021/07/13
  * @export
  * @class GameEvent
  */
 export class GameEvent {
+  //Test
+  public static readonly Test_InitMap = "Test_InitMap";
+  public static readonly Test_OverWriteMapAndCurrency = 'Test_OverWriteMapAndCurrency';
+  //=========================================================
   /**测试 */
   public static readonly GAME_TEST = 'GAME_TEST';//测试
   /**显示建筑栏*/
@@ -35,7 +39,15 @@ export class GameEvent {
   /*刷新荣誉*/
   public static readonly Refresh_Honor = "Refresh_Honor"
   /*请求刷新货币数据*/
-  public static readonly Request_Refresh_Currency = "";
+  public static readonly Request_Refresh_Currency = "Request_Refresh_Currency";
+  /*登录成功*/
+  public static readonly Login_Succeeded = "Login_Succeeded";
+  /*刷新用户信息*/
+  public static readonly Refresh_UserInfo = 'Refresh_UserInfo';
+  /*请求刷新用户信息*/
+  public static readonly Req_Refresh_UserInfo = 'Req_Refresh_UserInfo';
+  /*请求初始化建筑物UI*/
+  public static readonly Req_Init_BuildingUI = 'Req_Init_BuildingUI';
 }
 
 

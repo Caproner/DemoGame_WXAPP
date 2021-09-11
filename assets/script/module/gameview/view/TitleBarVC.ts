@@ -51,7 +51,7 @@ export default class TitleBarVC extends ViewCtrl {
     }
     let avatar: cc.Node = this.view['Avatar'];
     let sprite: cc.Sprite = avatar.getComponent(cc.Sprite);
-    let wxUserInfo: WXUserModel = DataCenter.inst.getModel('WXUser');
+    let wxUserInfo: WXUserModel = DataCenter.inst.wxUserModel;
     if (!wxUserInfo) {
       return;
     }

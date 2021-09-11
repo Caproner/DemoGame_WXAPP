@@ -11,17 +11,23 @@ const { ccclass } = cc._decorator;
 export default class UserInfoVC extends ViewCtrl {
 
   private avatar: cc.Node;
-  private nickName: cc.Node;
-  private gender: cc.Node;
-  private honor: cc.Node;
+  private nickName: cc.Label;
+  private gender: cc.Label;
+  private honor: cc.Label;
   private bg: cc.Node;
+  private level: cc.Label;
+  private exp: cc.Label;
 
   onLoad() {
     this.name = 'UserInfoVC';
     super.onLoad();
     //Log.log(this.view);
+    this.registerEvents();
     this.initUi();
+  }
+  private registerEvents() {
     this.node.on(cc.Node.EventType.TOUCH_END, this.cancel, this);
+    EventManager.on(GameEvent.Refresh_UserInfo, this.refreshInfo, this);
   }
 
   start() {
@@ -32,12 +38,30 @@ export default class UserInfoVC extends ViewCtrl {
 
   initUi() {
     this.avatar = this.view['Avatar'];
-    this.nickName = this.view['NickNameLabel'];
-    this.gender = this.view['GenderLabel'];
-    this.honor = this.view['HonorLabel'];
+    this.nickName = this.view['NickNameLabel'].getComponent(cc.Label);
+    this.gender = this.view['GenderLabel'].getComponent(cc.Label);
+    this.honor = this.view['HonorLabel'].getComponent(cc.Label);
     this.bg = this.view['BG'];
-    let wxUserInfo: WXUserModel = DataCenter.inst.getModel('WXUser');
-    if (!wxUserInfo) {
+    this.level = this.view['LevelLabel'].getComponent(cc.Label);
+    this.exp = this.view['ExpLabel'].getComponent(cc.Label);
+    EventManager.emit(GameEvent.Req_Refresh_UserInfo);
+  }
+
+  cancel(t: cc.Touch) {
+    let pos: cc.Vec2 = this.node.convertToNodeSpaceAR(t.getLocation());
+    let rect: cc.Rect = this.bg.getBoundingBox();
+    if (rect.contains(pos)) {
+      return;
+    }
+    EventManager.emit(GameEvent.Close_UserInfoView);
+  }
+
+  private refreshInfo(wxUserInfo: any, userInfo: any) {
+    //let wxUserInfo: WXUserModel = DataCenter.inst.wxUserModel;
+    //console.log("--------------");
+    //console.log(wxUserInfo);
+    //console.log(userInfo);
+    if (!wxUserInfo || !userInfo) {
       return;
     }
     if (wxUserInfo.avatarUrl) {
@@ -51,21 +75,12 @@ export default class UserInfoVC extends ViewCtrl {
       });
     }
 
-    let name: cc.Label = this.nickName.getComponent(cc.Label);
-    name.string = '昵称：' + wxUserInfo.nickName;
+    this.nickName.string = '昵称：' + wxUserInfo.nickName;
+    this.gender.string = '性别：' + (wxUserInfo.gender == 1 ? '男' : '女');
+    this.level.string = '等级：' + userInfo.lv;
+    this.exp.string = '经验：' + userInfo.exp;
+    this.honor.string = '荣誉：' + userInfo.honor;
 
-    let gender: cc.Label = this.gender.getComponent(cc.Label);
-    gender.string = '性别：' + (wxUserInfo.gender == 1 ? '男' : '女');
-
-  }
-
-  cancel(t: cc.Touch) {
-    let pos: cc.Vec2 = this.node.convertToNodeSpaceAR(t.getLocation());
-    let rect: cc.Rect = this.bg.getBoundingBox();
-    if (rect.contains(pos)) {
-      return;
-    }
-    EventManager.emit(GameEvent.Close_UserInfoView);
   }
 
 }

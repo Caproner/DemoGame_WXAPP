@@ -10,11 +10,10 @@ const { ccclass } = cc._decorator;
 @ccclass
 export default class LoginCtrl extends Ctrl {
 
-  private wxUserModel: WXUserModel;
+
 
   constructor() {
     super('LoginCtrl');
-    this.wxUserModel = DataCenter.inst.getModel('WXUser');
     this.register();
   }
 
@@ -33,21 +32,22 @@ export default class LoginCtrl extends Ctrl {
    * @memberof LoginCtrl
    */
   saveWXUserInfo(openID: string, info: any) {
+    Log.log(openID, info);
     if (!openID || !info) {
       Log.log('invalid openID & info');
       return;
     }
-    if (!this.wxUserModel) {
+    if (!DataCenter.inst.wxUserModel) {
       Log.log('invalid WxUserModel');
-      //Log.log(this.wxUserModel);
+      //Log.log(DataCenter.inst.wxUserModel);
       return;
     }
-    this.wxUserModel.openID = openID;
-    this.wxUserModel.avatarUrl = info.avatarUrl;
-    this.wxUserModel.city = info.city;
-    this.wxUserModel.country = info.country;
-    this.wxUserModel.gender = info.gender;
-    this.wxUserModel.nickName = info.nickName;
+    DataCenter.inst.wxUserModel.openID = openID;
+    DataCenter.inst.wxUserModel.avatarUrl = info.avatarUrl;
+    DataCenter.inst.wxUserModel.city = info.city;
+    DataCenter.inst.wxUserModel.country = info.country;
+    DataCenter.inst.wxUserModel.gender = info.gender;
+    DataCenter.inst.wxUserModel.nickName = info.nickName;
   }
 
 };

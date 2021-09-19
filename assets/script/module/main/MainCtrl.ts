@@ -8,6 +8,7 @@ import { GameEvent } from "./EventConst";
 import DataCenter from "./DataCenter";
 import axios from "../../framework/net/src/Axios";
 import Util from "../../framework/util/Util";
+import { PROTO } from "../datacfg/proto";
 
 const { ccclass } = cc._decorator;
 export default class MainCtrl extends cc.Component {
@@ -66,9 +67,9 @@ export default class MainCtrl extends cc.Component {
 
 
     axios({
-      url: 'http://1.15.40.65:17263/player/action',
+      url: PROTO.saddr,//'http://1.15.40.65:17263/player/action',
       data: {
-        Proto: '120011',
+        Proto: PROTO.c2s_player_info,
         OpenID: mdata.data.OpenID
       }
     }).then(res => {
@@ -98,9 +99,9 @@ export default class MainCtrl extends cc.Component {
 
   private loopSync() {
     axios({
-      url: 'http://1.15.40.65:17263/player/action',
+      url: PROTO.saddr,
       data: {
-        Proto: '130001',
+        Proto: PROTO.c2s_loop_sync,//'130001',
         OpenID: DataCenter.inst.wxUserModel.openID,
       }
     }).then(res => { console.log(res) })

@@ -54,7 +54,7 @@ export default class UserInfoModel extends DataModel {
     {
       '2': 100,
       '1': 10,
-      '0': 1000
+      '0': 2000
     }
     this._lv = 1;
     this._exp = 0;

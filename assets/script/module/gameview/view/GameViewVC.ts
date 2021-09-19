@@ -163,6 +163,9 @@ export default class GameViewVC extends ViewCtrl {
     }
     pos = this.buildingLayer.convertToNodeSpaceAR(t.getLocation());
     let girdPos: cc.Vec3 = Util.girdPos(pos, girdWidth, girdWidth);
+    girdPos.x = Math.floor(girdPos.x / 2) * 2;
+    girdPos.y = Math.floor(girdPos.y / 2) * 2;
+    //console.log(girdPos);
     EventManager.emit(GameEvent.Build, { 'id': this.buildId, 'pos': girdPos });
   }
 
@@ -171,7 +174,8 @@ export default class GameViewVC extends ViewCtrl {
       return;
     }
     //Log.log(girdPos, remove);
-    let pos2: cc.Vec3 = cc.v3(girdPos.x * girdWidth + halfGirdWidth, girdPos.y * girdWidth + halfGirdWidth, 0);
+    //let pos2: cc.Vec3 = cc.v3(girdPos.x * girdWidth + halfGirdWidth, girdPos.y * girdWidth + halfGirdWidth, 0);
+    let pos2: cc.Vec3 = cc.v3((girdPos.x + 1) * girdWidth, (girdPos.y + 1) * girdWidth, 0);
     if (remove) {
 
       let pos2d = cc.v2(pos2.x, pos2.y);

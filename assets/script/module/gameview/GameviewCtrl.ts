@@ -5,6 +5,7 @@ import DataCenter from "../main/DataCenter";
 import { GameEvent } from "../main/EventConst";
 import axios from "../../framework/net/src/Axios";
 import Util from "../../framework/util/Util";
+import { PROTO } from "../datacfg/proto";
 
 export default class GameviewCtrl extends Ctrl {
 
@@ -41,6 +42,9 @@ export default class GameviewCtrl extends Ctrl {
     let pos: cc.Vec2 | cc.Vec3 = obj['pos'];
     //console.log(DataCenter.inst.mapModel.map[pos_str]);
     let pos_str = `${pos.y},${pos.x}`;
+    if (!DataCenter.inst.mapModel.map[pos_str]) {
+      return;
+    }
     if (DataCenter.inst.mapModel.map[pos_str]['terrain']['id'] != 3) {
       return;
     }
@@ -84,10 +88,10 @@ export default class GameviewCtrl extends Ctrl {
 
   private submitMap() {
     axios({
-      url: 'http://1.15.40.65:17263/player/action',
+      url: PROTO.saddr,
       method: 'POST',
       data: {
-        Proto: '130051',
+        Proto: PROTO.c2s_maps_sync,
         OpenID: DataCenter.inst.wxUserModel.openID,
         Maps: DataCenter.inst.mapModel.map
       }
@@ -97,10 +101,10 @@ export default class GameviewCtrl extends Ctrl {
 
   private submitCurrency() {
     axios({
-      url: 'http://1.15.40.65:17263/player/action',
+      url: PROTO.saddr,
       method: 'POST',
       data: {
-        Proto: '130011',
+        Proto: PROTO.c2s_money_sync,
         OpenID: DataCenter.inst.wxUserModel.openID,
         Money: DataCenter.inst.userInfoModel.currency
       }
@@ -110,7 +114,7 @@ export default class GameviewCtrl extends Ctrl {
 
   // private submitBuildings() {
   //   axios({
-  //     url: 'http://1.15.40.65:17263/player/action',
+  //     url: PROTO.saddr,
   //     method: 'POST',
   //     data: {
   //       Proto: '130031',
@@ -123,10 +127,10 @@ export default class GameviewCtrl extends Ctrl {
 
   private overWriteMapAndCurrency() {
     axios({
-      url: 'http://1.15.40.65:17263/player/action',
+      url: PROTO.saddr,
       method: 'POST',
       data: {
-        Proto: '130051',
+        Proto: PROTO.c2s_maps_sync,
         OpenID: DataCenter.inst.wxUserModel.openID,
         Maps: {}
       }
@@ -134,10 +138,10 @@ export default class GameviewCtrl extends Ctrl {
       .catch(err => { console.log(err) })
 
     axios({
-      url: 'http://1.15.40.65:17263/player/action',
+      url: PROTO.saddr,
       method: 'POST',
       data: {
-        Proto: '130011',
+        Proto: PROTO.c2s_money_sync,
         OpenID: DataCenter.inst.wxUserModel.openID,
         Money: {}
       }

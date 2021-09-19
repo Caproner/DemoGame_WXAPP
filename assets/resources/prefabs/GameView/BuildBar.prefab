@@ -58,7 +58,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 720,
+      "width": 864,
       "height": 100
     },
     "_anchorPoint": {
@@ -71,7 +71,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -598,
+        -694,
         0,
         0,
         0,
@@ -140,7 +140,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -285,
+        -357,
         0,
         0,
         0,
@@ -300,7 +300,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "7dy6MQCFVHuKmuawcY2Q99",
+    "fileId": "7e/tacsxZBPIMoRef+tI/Z",
     "sync": false
   },
   {
@@ -348,7 +348,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -185,
+        -257,
         0,
         0,
         0,
@@ -508,7 +508,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "bfU7uUTPlHeY4dfpDBkpP1",
+    "fileId": "67eP5jUoVEW44VsXlQQKwF",
     "sync": false
   },
   {
@@ -556,7 +556,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -85,
+        -157,
         0,
         0,
         0,
@@ -716,7 +716,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "6cnp63zcJECoz61bKxAh78",
+    "fileId": "92KDgXRhdN14Lpy9NUJTbn",
     "sync": false
   },
   {
@@ -764,7 +764,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        15,
+        -57,
         0,
         0,
         0,
@@ -924,7 +924,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "8bjZYKLGRKGLxj/Xt8MLN3",
+    "fileId": "bdwqAo+4pG9Zuoog0YtUUL",
     "sync": false
   },
   {
@@ -972,7 +972,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        345,
+        417,
         35,
         0,
         0,
@@ -1132,7 +1132,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "fekLrU4u5Nja9kegU2Mazj",
+    "fileId": "86+2XGsm9FsqcVX7Y+K7Bw",
     "sync": false
   },
   {
@@ -1239,7 +1239,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "53ML8zN0tOYa2h6wUC3q/w",
+    "fileId": "a1KAwixINAWYl0vMMrsJAP",
     "sync": false
   },
   {
@@ -1256,7 +1256,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 0,
-    "_bottom": 0,
+    "_bottom": 24,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -1287,7 +1287,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "436iqGzV1I0KIxHO+H+pa4",
+    "fileId": "5f22NBZZxOP6XnjNvjPmrd",
     "sync": false
   }
 ]
